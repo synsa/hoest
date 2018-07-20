@@ -1,0 +1,7 @@
+#!/bin/bash
+
+j4-make-config ubuntu
+mv $HOME/.config/i3/config $HOME/.config/i3/config.temp
+$HOME/.config/i3/i3bang.rb
+rm $HOME/.config/i3/config.temp
+
