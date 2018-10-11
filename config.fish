@@ -59,10 +59,10 @@ end
 
 function fish_greeting
     clear
-    if status is-login
-        sudo echo "Welcome..."
-        clear
-    end
+    #if status is-login
+    #    sudo echo "Welcome..."
+    #    clear
+    #end
     echo "***HOEST***" | toilet -f pagga | lolcat -p 20 -F 1
     fortune -sa | cowsay -T U -f (cowsay -l | string split " " | tail -n +5 | shuf -n 1)
 
@@ -95,12 +95,27 @@ function fish_greeting
     echo -en "\tOS: "
     set_color 0F0
     echo -e (cat /etc/os-release | head -n 1 | cut -c 7- | rev | cut -c 2- | rev | tr '\n' ' '; uname -mr)
-    if status is-login
-        set_color yellow
-        echo -en "\tCPU: "
-        set_color 0F0
-        echo -en (sudo dmidecode --type processor | grep -i "version" | cut -c 28-)
-    end
+    set_color yellow
+    echo -en "\tCPU: "
+    set_color 0F0
+    echo -en (lscpu | grep socket | cut -c 39-)
+    echo -en "C"
+    echo -en (lscpu | grep core | cut -c 39-)
+    echo -en "T "
+    #echo -en (sudo dmidecode --type processor | grep -i "version" | cut -c 28-)
+    echo -en (lscpu | grep name | cut -c 39- | rev | cut -c 8- | rev)
+    echo -e "scale=2; "(lscpu | grep max | cut -c 39-)/1000 | bc -l | tr -d '\n'
+    echo -e "GHz"
+    set_color yellow
+    echo -en "\tRAM:"
+    set_color 0F0
+    echo -en (free -m | grep Mem | cut -c 31- | rev | cut -c 61- | rev)
+    echo -en "GB "
+    set_color yellow
+    echo -en "SWAP: "
+    set_color 0F0
+    echo -en (free -m | grep Swap | cut -c 31- | rev | cut -c 25- | rev)
+    echo -e "GB"
 end
 
 #this will run once at initial login
